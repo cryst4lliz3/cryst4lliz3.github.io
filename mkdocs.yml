@@ -4,7 +4,7 @@ site_name: Ahmad A'fif
 # Page tree
 nav:
   - Home: index.md
-  - Writeup:
+  - Write-up:
     - CTF Intern:
       - CTF Round 3 - Active Directory: writeup/ctf-intern/ctf-round-3-active-directory.md
 
