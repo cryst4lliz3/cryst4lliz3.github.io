@@ -9,5 +9,4 @@ nav:
       - CTF Round 3 - Active Directory: writeup/ctf-intern/ctf-round-3-active-directory.md
 
 # Configuration
-theme:
-  name: material
+theme: readthedocs
