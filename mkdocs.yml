@@ -1,0 +1,13 @@
+# Site Information
+site_name: Ahmad A'fif
+
+# Page tree
+nav:
+  - Home: index.md
+  - Writeup:
+    - CTF Intern:
+      - CTF Round 3 - Active Directory: writeup/ctf-intern/ctf-round-3-active-directory.md
+
+# Configuration
+theme:
+  name: material
