@@ -1,5 +1,7 @@
 # Site Information
-site_name: Ahmad A'fif
+site_name: Cryst4lliz3
+site_description: newbie in cybersec
+site_author: Ahmad A'fif
 
 # Page tree
 nav:
@@ -7,7 +9,12 @@ nav:
   - Write-up:
     - CTF Intern:
       - CTF Round 3 - Active Directory: writeup/ctf-intern/ctf-round-3-active-directory.md
+    - CyberDefenders:
+      - Malware Traffic Analysis 1 - PCAP: writeup/cyberdefenders/malware-traffic-analysis-1-pcap.md
 
 # Configuration
 theme: 
   name: material
+
+markdown_extensions:
+  
