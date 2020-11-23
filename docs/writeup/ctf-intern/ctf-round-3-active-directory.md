@@ -20,7 +20,7 @@ remote vpn.ctf.xxxxxxxxxx.com 11139 udp
 
 While scrolling, I found this line of config included host name, port number and protocol. I copied the host name and ran into [WHOIS IP Lookup Tool](https://www.ultratools.com/tools/ipWhoisLookup). Found the IP address 178.XXX.XXX.221.
 
-#### Answer: 178.XXX.XXX.221:udp:11139  
+**Answer: 178.XXX.XXX.221:udp:11139**  
 
 ### Q2 - VPN user network address
 
@@ -28,7 +28,7 @@ While scrolling, I found this line of config included host name, port number and
 
 Question 2 asked for the user network address. To achieve that, I need to connect to the VPN. I ran `sudo openvpn vpn_conect.config`. Once connection initialized, I ran `ifconfig` and look for interface name like **tunXX**. There is the user IP address at the interface. Note that network address is like **10.XXX.XXX.0**. Simply changed it.
 
-#### Answer: 10.0.200.0
+**Answer: 10.0.200.0**
 
 ### Q3 - Challenge server network address
 
@@ -50,7 +50,7 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 
 On interface **tun0**, there are 2 network address, **192.168.9.0** and **192.168.240.0** that have flag **UG**. This flag means that the route is up and point to a gateway. Both address point to **10.0.200.1** which is the gateway. I tested both network address and got the right answer.
 
-#### Answer: 192.168.240.0
+**Answer: 192.168.240.0**
 
 ## Challenges - Web Server
 
@@ -180,7 +180,7 @@ Got the valid credential for tomcat (**admin:tomcat**). I login the Tomcat Manag
 
 ![](/images/ctf-round-3-active-directory/13.png)
 
-#### Answer: admin:tomcat
+**Answer: admin:tomcat**
 
 ### Q2 - MD5 checksum hash for file 'tomcat.ico'
 
@@ -256,7 +256,7 @@ meterpreter > checksum md5 tomcat.ico
 4644f2d45601037b8423d45e13194c93  tomcat.ico
 ```
 
-#### Answer: 4644f2d45601037b8423d45e13194c93
+**Answer: 4644f2d45601037b8423d45e13194c93**
 
 ### Q3 - Plain text password for domain user
 
@@ -471,7 +471,7 @@ cur/text: P@ssw0rd123!
 
 The password for domain user is stated there.
 
-#### Answer: P@ssw0rd123! 
+**Answer: P@ssw0rd123!** 
 
 ### Q4 - NTLM hash result for user Administrator
 
@@ -506,7 +506,7 @@ msf6 post(windows/gather/smart_hashdump) > run
 
 Now I have the full NTLM hash for Administrator.
 
-#### Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::
+**Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::**
 
 ### Q5 - Plain text password for user Administrator
 
@@ -516,7 +516,7 @@ The full NTLM hash consist of 4 parts which are `username` : `relative identifie
 
 ![](/images/ctf-round-3-active-directory/14.png)
 
-#### Answer: P@ssw0rd
+**Answer: P@ssw0rd**
 
 ### Q6 - Domain User
 
@@ -524,7 +524,7 @@ The full NTLM hash consist of 4 parts which are `username` : `relative identifie
 
 Based on the output of `lsa_dump_secrets`, the domain user is ali
 
-#### Answer: ali
+**Answer: ali**
 
 ### Q7 - Domain Admin
 
@@ -576,7 +576,7 @@ I uploaded `winPEAS.exe` and executed it. Here's the output of `winPEAE.exe` on 
 
 Note that there were 2 domain admins who are `abu` and `umar`.
 
-#### Answer: abu:umar
+**Answer: abu:umar**
 
 ### Q8 - Enterprise Admins
 
@@ -584,7 +584,7 @@ Note that there were 2 domain admins who are `abu` and `umar`.
 
 Based on the output of `winPEAS.exe` on `Users Information`, there is only enterprise admin who is `abu`.
 
-#### Answer: abu
+**Answer: abu**
 
 ## Challenges - File Server
 
@@ -651,7 +651,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 57.07 seconds
 ```
 
-#### Answer: 192.168.240.13
+**Answer: 192.168.240.13**
 
 ### Q2 - Folder share name that 'domain user' has write access to file server
 
