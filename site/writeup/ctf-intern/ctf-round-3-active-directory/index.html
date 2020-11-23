@@ -178,13 +178,13 @@
     
     <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
     <label class="md-nav__link" for="nav-2">
-      Writeup
+      Write-up
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Writeup" data-md-level="1">
+    <nav class="md-nav" aria-label="Write-up" data-md-level="1">
       <label class="md-nav__title" for="nav-2">
         <span class="md-nav__icon md-icon"></span>
-        Writeup
+        Write-up
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -1328,7 +1328,7 @@ msf6 post(windows/gather/smart_hashdump) &gt; run
 <h4 id="answer-administrator500aad3b435b51404eeaad3b435b51404eee19ccf75ee54e06b06a5907af13cef42">Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:e19ccf75ee54e06b06a5907af13cef42:::</h4>
 <h3 id="q5-plain-text-password-for-user-administrator">Q5 - Plain text password for user Administrator</h3>
 <p><img alt="" src="/images/ctf-round-3-active-directory/9.png" /></p>
-<p>The full NTLM hash consist of 4 parts which are <code>username</code> : <code>relative identifier</code> : <code>LM hash</code> : <code>NT hash</code> :::. To get the password for user Administrator, I need to crack the <code>NT hash</code> using <code>john</code> or <a href="https://crackstation.net/">online tool</a>. I copied the <code>NT hash</code> and paste it on online tool.</p>
+<p>The full NTLM hash consist of 4 parts which are <code>username</code> : <code>relative identifier</code> : <code>LM hash</code> : <code>NT hash</code> :::. To get the password for user Administrator, I need to crack the <code>NT hash</code> using <code>john</code> or <a href="https://crackstation.net/">crackstation.net</a>. I copied the <code>NT hash</code> and paste it on online tool.</p>
 <p><img alt="" src="/images/ctf-round-3-active-directory/14.png" /></p>
 <h4 id="answer-pssw0rd">Answer: P@ssw0rd</h4>
 <h3 id="q6-domain-user">Q6 - Domain User</h3>
