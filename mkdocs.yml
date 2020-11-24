@@ -8,9 +8,9 @@ nav:
   - Home: index.md
   - Write-up:
     - CTF Intern:
-      - CTF Round 3 - Active Directory: writeup/ctf-intern/ctf-round-3-active-directory.md
+      - CTF Round 3 - Active Directory: writeup/ctf-round-3-active-directory.md
     - CyberDefenders:
-      - Malware Traffic Analysis 1 - PCAP: writeup/cyberdefenders/malware-traffic-analysis-1-pcap.md
+      - Malware Traffic Analysis 1 - PCAP: writeup/malware-traffic-analysis-1-pcap.md
 
 # Configuration
 theme: 
