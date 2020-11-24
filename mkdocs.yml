@@ -7,6 +7,8 @@ site_author: Ahmad A'fif
 nav:
   - Home: index.md
   - Write-up:
+    - Basic Malware Analysis:
+      - Chake Berberian Order.exe: writeup/basic-malware-analysis-chake-berberian-order.md
     - CTF Intern:
       - CTF Round 3 - Active Directory: writeup/ctf-round-3-active-directory.md
     - CyberDefenders:
@@ -14,7 +16,4 @@ nav:
 
 # Configuration
 theme: 
-  name: material
-
-markdown_extensions:
-  
+  name: material 
