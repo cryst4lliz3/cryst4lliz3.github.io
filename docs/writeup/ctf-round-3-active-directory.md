@@ -655,25 +655,41 @@ Nmap done: 1 IP address (1 host up) scanned in 57.07 seconds
 
 ### Q2 - Folder share name that 'domain user' has write access to file server
 
-![](/images/ctf-round-3-active-directory/2.png)
+![](/images/ctf-round-3-active-directory/16.png)
 
+Since I have the credential of the domain user which is user `ali`, I can use `smbmap` to check it. 
 
+```
+smbmap -H 192.168.240.13 -d MYCOMS -u ali -p P@ssw0rd123!
+[+] IP: 192.168.240.13:445	Name: 192.168.240.13                                    
+        Disk                                                  	Permissions	Comment
+	----                                                  	-----------	-------
+	Admin File                                        	READ ONLY	
+	ADMIN$                                            	NO ACCESS	Remote Admin
+	C$                                                	NO ACCESS	Default share
+	IPC$                                              	READ ONLY	Remote IPC
+	WebService                                        	READ, WRITE	Web service file share for company
+```
+
+From this output, user `ali` only have pemission to write on folder `WebService`.
+
+**Answer: WebService**
 
 ### Q3 - NTLM hash result for user Administrator
 
-![](/images/ctf-round-3-active-directory/2.png)
+![](/images/ctf-round-3-active-directory/17.png)
 
 
 
 ### Q4 - NTLM hash result for user "*mar"
 
-![](/images/ctf-round-3-active-directory/2.png)
+![](/images/ctf-round-3-active-directory/18.png)
 
 
 
 ### Q5 - Plain text password for user Administrator
 
-![](/images/ctf-round-3-active-directory/2.png)
+![](/images/ctf-round-3-active-directory/19.png)
 
 
 

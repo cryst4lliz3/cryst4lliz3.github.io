@@ -1208,13 +1208,26 @@ Nmap done: 1 IP address (1 host up) scanned in 57.07 seconds
 </code></pre>
 <p><strong>Answer: 192.168.240.13</strong></p>
 <h3 id="q2-folder-share-name-that-domain-user-has-write-access-to-file-server">Q2 - Folder share name that 'domain user' has write access to file server</h3>
-<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/16.png" /></p>
+<p>Since I have the credential of the domain user which is user <code>ali</code>, I can use <code>smbmap</code> to check it. </p>
+<pre><code>smbmap -H 192.168.240.13 -d MYCOMS -u ali -p P@ssw0rd123!
+[+] IP: 192.168.240.13:445  Name: 192.168.240.13                                    
+        Disk                                                    Permissions Comment
+    ----                                                    ----------- -------
+    Admin File                                          READ ONLY   
+    ADMIN$                                              NO ACCESS   Remote Admin
+    C$                                                  NO ACCESS   Default share
+    IPC$                                                READ ONLY   Remote IPC
+    WebService                                          READ, WRITE Web service file share for company
+</code></pre>
+<p>From this output, user <code>ali</code> only have pemission to write on folder <code>WebService</code>.</p>
+<p><strong>Answer: WebService</strong></p>
 <h3 id="q3-ntlm-hash-result-for-user-administrator">Q3 - NTLM hash result for user Administrator</h3>
-<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/17.png" /></p>
 <h3 id="q4-ntlm-hash-result-for-user-mar">Q4 - NTLM hash result for user "*mar"</h3>
-<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/18.png" /></p>
 <h3 id="q5-plain-text-password-for-user-administrator_1">Q5 - Plain text password for user Administrator</h3>
-<p><img alt="" src="/images/ctf-round-3-active-directory/2.png" /></p>
+<p><img alt="" src="/images/ctf-round-3-active-directory/19.png" /></p>
 <p>to be continue ...</p>
                 
               
