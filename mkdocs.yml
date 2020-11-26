@@ -17,3 +17,8 @@ nav:
 # Configuration
 theme: 
   name: material 
+
+# Analytics
+google_analytics:
+  - UA-183966884-1
+  - auto
