@@ -852,6 +852,8 @@ Stopped: Thu Nov 26 23:48:17 2020
 
 ### Q1 - NTLM hash result for user Administrator
 
+![](/images/ctf-round-3-active-directory/20.png)
+
 I looked into the host's ARP cache using `arp`.
 
 ```
@@ -888,93 +890,18 @@ PORT     STATE SERVICE
 3389/tcp open  ms-wbt-server
 ```
 
-Domain controller commonly have these ports. I tried to scan again with more options.
+Domain controller commonly have these ports. I found 2 tools that I can use for getting the shell, `smbexec` and `psexec`. I used `psexec` because Metasploit has a module of it. So, I can easily spawn meterpreter from it. I also have the NTLM hash for one of the domain admin, `umar`. Firstly, I need to check what share folder that domain admin `umar` can access.
 
 ```
-$ nmap -Pn -A --script vuln 192.168.240.30
-Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
-Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-27 00:16 +08
-Pre-scan script results:
-| broadcast-avahi-dos: 
-|   Discovered hosts:
-|     224.0.0.251
-|   After NULL UDP avahi packet DoS (CVE-2011-1002).
-|_  Hosts are all up (not vulnerable).
-Nmap scan report for 192.168.240.30
-Host is up (0.056s latency).
-Not shown: 996 filtered ports
-PORT     STATE SERVICE            VERSION
-135/tcp  open  msrpc              Microsoft Windows RPC
-139/tcp  open  netbios-ssn        Microsoft Windows netbios-ssn
-445/tcp  open  microsoft-ds       Microsoft Windows Server 2008 R2 - 2012 microsoft-ds (workgroup: MYCOMS)
-3389/tcp open  ssl/ms-wbt-server?
-|_rdp-vuln-ms12-020: ERROR: Script execution failed (use -d to debug)
-| ssl-dh-params: 
-|   VULNERABLE:
-|   Diffie-Hellman Key Exchange Insufficient Group Strength
-|     State: VULNERABLE
-|       Transport Layer Security (TLS) services that use Diffie-Hellman groups
-|       of insufficient strength, especially those using one of a few commonly
-|       shared groups, may be susceptible to passive eavesdropping attacks.
-|     Check results:
-|       WEAK DH GROUP 1
-|             Cipher Suite: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
-|             Modulus Type: Safe prime
-|             Modulus Source: RFC2409/Oakley Group 2
-|             Modulus Length: 1024
-|             Generator Length: 1024
-|             Public Key Length: 1024
-|     References:
-|_      https://weakdh.org
-|_sslv2-drown: 
-Service Info: Host: PROD-AD3211; OS: Windows; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-|_smb-vuln-ms10-054: false
-|_smb-vuln-ms10-061: NT_STATUS_ACCESS_DENIED
-| smb-vuln-ms17-010: 
-|   VULNERABLE:
-|   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
-|     State: VULNERABLE
-|     IDs:  CVE:CVE-2017-0143
-|     Risk factor: HIGH
-|       A critical remote code execution vulnerability exists in Microsoft SMBv1
-|        servers (ms17-010).
-|           
-|     Disclosure date: 2017-03-14
-|     References:
-|       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
-|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
-|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
-
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 82.37 seconds
-```
-
-`vuln` script suggested that this host is vulnerable to MS17-010 on port 445 and Diffie-Hellman Key Exchange Insufficient Group Strength on port 3389.
-
-I ran `auxiliary/scanner/smb/smb_ms17_010` to this host and it gives this output
 
 ```
-msf6 post(windows/gather/smart_hashdump) > use auxiliary/scanner/smb/smb_ms17_010
-msf6 auxiliary(scanner/smb/smb_ms17_010) > set RHOSTS 192.168.240.30
-RHOSTS => 192.168.240.30
-msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBDomain MYCOMS
-SMBDomain => MYCOMS
-msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBUser ali
-SMBUser => ali
-msf6 auxiliary(scanner/smb/smb_ms17_010) > set SMBPass P@ssw0rd123!
-SMBPass => P@ssw0rd123!
-msf6 auxiliary(scanner/smb/smb_ms17_010) > run
-
-[-] 192.168.240.30:445    - Host does NOT appear vulnerable.
-[*] 192.168.240.30:445    - Scanned 1 of 1 hosts (100% complete)
-[*] Auxiliary module execution completed
-```
-
-Host isn't vulnerable to MS17-010. I'm lost hahahhahahah!
-
-
 
 ### Q2 - NTLM hash result for Enterprise admin user
 
+![](/images/ctf-round-3-active-directory/21.png)
+
+
+
+### Q3 - Bonus - Plain text password for Domain admin user
+
+![](/images/ctf-round-3-active-directory/22.png)
