@@ -48,7 +48,7 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 192.168.240.0   10.0.200.1      255.255.255.0   UG        0 0          0 tun0
 ```
 
-On interface **tun0**, there are 2 network address, **192.168.9.0** and **192.168.240.0** that have flag **UG**. This flag means that the route is up and point to a gateway. Both address point to **10.0.200.1** which is the gateway. I tested both network address and got the right answer.
+On interface `tun0`, there are 2 network address, `192.168.9.0` and `192.168.240.0` that have flag `UG`. This flag means that the route is up and point to a gateway. Both address point to `10.0.200.1` which is the gateway. I tested both network address and got the right answer.
 
 **Answer: 192.168.240.0/24**
 
@@ -57,7 +57,7 @@ On interface **tun0**, there are 2 network address, **192.168.9.0** and **192.16
 To answer this challenge, I need to know the IP address of the web server. I went through the question and found hint on **question 6** which stated the ip address **192.168.240.80**. I ran `nmap -Pn -A 192.168.240.80` and got something.
 
 ```
-$ nmap -Pn -A 192.168.9.0/24
+$ nmap -Pn -A 192.168.240.80
 
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-21 23:50 +08
@@ -75,7 +75,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 27.79 seconds
 ```
 
-**nmap** discovered 3 ports on **192.168.240.80** and only 1 port is open, port **8080** -> Apache Tomcat.
+`nmap` discovered 3 ports on `192.168.240.80` and only 1 port is open, port `8080` -> Apache Tomcat.
 
 ### Q1 - Username and password for webserver 'cat' with name 'tom'.
 
@@ -176,7 +176,7 @@ msf6 auxiliary(scanner/http/tomcat_mgr_login) > run
 [*] Auxiliary module execution completed
 ```
 
-Got the valid credential for tomcat (**admin:tomcat**). I login the Tomcat Manager site with the credential and I'm inside!
+Got the valid credential for tomcat `admin:tomcat`. I login the Tomcat Manager site with the credential and I'm inside!
 
 ![](/images/ctf-round-3-active-directory/13.png)
 

@@ -781,11 +781,11 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 192.168.9.0     10.0.200.1      255.255.255.0   UG        0 0          0 tun0
 192.168.240.0   10.0.200.1      255.255.255.0   UG        0 0          0 tun0
 </code></pre>
-<p>On interface <strong>tun0</strong>, there are 2 network address, <strong>192.168.9.0</strong> and <strong>192.168.240.0</strong> that have flag <strong>UG</strong>. This flag means that the route is up and point to a gateway. Both address point to <strong>10.0.200.1</strong> which is the gateway. I tested both network address and got the right answer.</p>
+<p>On interface <code>tun0</code>, there are 2 network address, <code>192.168.9.0</code> and <code>192.168.240.0</code> that have flag <code>UG</code>. This flag means that the route is up and point to a gateway. Both address point to <code>10.0.200.1</code> which is the gateway. I tested both network address and got the right answer.</p>
 <p><strong>Answer: 192.168.240.0/24</strong></p>
 <h2 id="challenges-web-server">Challenges - Web Server</h2>
 <p>To answer this challenge, I need to know the IP address of the web server. I went through the question and found hint on <strong>question 6</strong> which stated the ip address <strong>192.168.240.80</strong>. I ran <code>nmap -Pn -A 192.168.240.80</code> and got something.</p>
-<pre><code>$ nmap -Pn -A 192.168.9.0/24
+<pre><code>$ nmap -Pn -A 192.168.240.80
 
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-21 23:50 +08
@@ -802,7 +802,7 @@ PORT     STATE  SERVICE VERSION
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 27.79 seconds
 </code></pre>
-<p><strong>nmap</strong> discovered 3 ports on <strong>192.168.240.80</strong> and only 1 port is open, port <strong>8080</strong> -&gt; Apache Tomcat.</p>
+<p><code>nmap</code> discovered 3 ports on <code>192.168.240.80</code> and only 1 port is open, port <code>8080</code> -&gt; Apache Tomcat.</p>
 <h3 id="q1-username-and-password-for-webserver-cat-with-name-tom">Q1 - Username and password for webserver 'cat' with name 'tom'.</h3>
 <p><img alt="" src="/images/ctf-round-3-active-directory/5.png" /></p>
 <p>I ran <code>msfconsole</code> and search for specific modules about the Apache Tomcat by using command <code>search tomcat</code>.</p>
@@ -894,7 +894,7 @@ msf6 auxiliary(scanner/http/tomcat_mgr_login) &gt; run
 [*] Scanned 1 of 1 hosts (100% complete)
 [*] Auxiliary module execution completed
 </code></pre>
-<p>Got the valid credential for tomcat (<strong>admin:tomcat</strong>). I login the Tomcat Manager site with the credential and I'm inside!</p>
+<p>Got the valid credential for tomcat <code>admin:tomcat</code>. I login the Tomcat Manager site with the credential and I'm inside!</p>
 <p><img alt="" src="/images/ctf-round-3-active-directory/13.png" /></p>
 <p><strong>Answer: admin:tomcat</strong></p>
 <h3 id="q2-md5-checksum-hash-for-file-tomcatico">Q2 - MD5 checksum hash for file 'tomcat.ico'</h3>
