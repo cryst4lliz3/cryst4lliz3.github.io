@@ -767,7 +767,7 @@
 <h3 id="q2-vpn-user-network-address">Q2 - VPN user network address</h3>
 <p><img alt="" src="/images/ctf-round-3-active-directory/3.png" /></p>
 <p>Question 2 asked for the user network address. To achieve that, I need to connect to the VPN. I ran <code>sudo openvpn vpn_conect.config</code>. Once connection initialized, I ran <code>ifconfig</code> and look for interface name like <strong>tunXX</strong>. There is the user IP address at the interface. Note that network address is like <strong>10.XXX.XXX.0</strong>. Simply changed it.</p>
-<p><strong>Answer: 10.0.200.0</strong></p>
+<p><strong>Answer: 10.0.200.0/24</strong></p>
 <h3 id="q3-challenge-server-network-address">Q3 - Challenge server network address</h3>
 <p><img alt="" src="/images/ctf-round-3-active-directory/4.png" /></p>
 <p>Question 3 asked for the server network address. Hint said I need to use command <code>netstat -rn</code>. I ran the command and get this output.</p>
@@ -782,7 +782,7 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 192.168.240.0   10.0.200.1      255.255.255.0   UG        0 0          0 tun0
 </code></pre>
 <p>On interface <strong>tun0</strong>, there are 2 network address, <strong>192.168.9.0</strong> and <strong>192.168.240.0</strong> that have flag <strong>UG</strong>. This flag means that the route is up and point to a gateway. Both address point to <strong>10.0.200.1</strong> which is the gateway. I tested both network address and got the right answer.</p>
-<p><strong>Answer: 192.168.240.0</strong></p>
+<p><strong>Answer: 192.168.240.0/24</strong></p>
 <h2 id="challenges-web-server">Challenges - Web Server</h2>
 <p>To answer this challenge, I need to know the IP address of the web server. I went through the question and found hint on <strong>question 6</strong> which stated the ip address <strong>192.168.240.80</strong>. I ran <code>nmap -Pn -A 192.168.240.80</code> and got something.</p>
 <pre><code>$ nmap -Pn -A 192.168.9.0/24
