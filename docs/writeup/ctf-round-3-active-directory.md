@@ -905,3 +905,82 @@ Domain controller commonly have these ports. I found 2 tools that I can use for 
 ### Q3 - Bonus - Plain text password for Domain admin user
 
 ![](/images/ctf-round-3-active-directory/22.png)
+
+Grab that NTLM hash for domain admin user `abu` into hashcat. I used Google Colab to bruteforce the plaintext password. I also modified the hint so that the time required for brute forcing became lesser.
+
+```
+$ hashcat -m 1000 -a 3 7670e8dd99bbdc594089db1c33844092 '?u?a?a?a?a?a?aP@ssw0rd123!'
+
+hashcat (v4.0.1) starting...
+
+nvmlDeviceGetFanSpeed(): Not Supported
+
+OpenCL Platform #1: NVIDIA Corporation
+======================================
+* Device #1: Tesla T4, 3769/15079 MB allocatable, 40MCU
+
+Hashes: 1 digests; 1 unique digests, 1 unique salts
+Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+
+Applicable optimizers:
+* Zero-Byte
+* Early-Skip
+* Not-Salted
+* Not-Iterated
+* Single-Hash
+* Single-Salt
+* Brute-Force
+* Raw-Hash
+
+Password length minimum: 0
+Password length maximum: 256
+
+ATTENTION! Pure (unoptimized) OpenCL kernels selected.
+This enables cracking passwords and salts > length 32 but for the price of drastical reduced performance.
+If you want to switch to optimized OpenCL kernels, append -O to your commandline.
+
+Watchdog: Temperature abort trigger set to 90c
+Watchdog: Temperature retain trigger disabled.
+
+* Device #1: build_opts '-I /usr/share/hashcat/OpenCL -D VENDOR_ID=32 -D CUDA_ARCH=705 -D AMD_ROCM=0 -D VECT_SIZE=1 -D DEVICE_TYPE=4 -D DGST_R0=0 -D DGST_R1=3 -D DGST_R2=2 -D DGST_R3=1 -D DGST_ELEM=4 -D KERN_TYPE=1000 -D _unroll'
+- Device #1: autotuned kernel-accel to 128
+- Device #1: autotuned kernel-loops to 128
+Cracking performance lower than expected?
+
+* Append -O to the commandline.
+  This lowers the maximum supported password- and salt-length (typically down to 32).
+
+* Append -w 3 to the commandline.
+  This can cause your screen to lag.
+
+* Update your OpenCL runtime / driver the right way:
+  https://hashcat.net/faq/wrongdriver
+
+* Create more work items to make use of your parallelization power:
+  https://hashcat.net/faq/morework
+
+[s]tatus [p]ause [r]esume [b]ypass [c]heckpoint [q]uit =>
+
+7670e8dd99bbdc594089db1c33844092:SecuredP@ssw0rd123!
+                                                          
+Session..........: hashcat
+Status...........: Cracked
+Hash.Type........: NTLM
+Hash.Target......: 7670e8dd99bbdc594089db1c33844092
+Time.Started.....: Sun Nov 29 21:54:41 2020 (3 mins, 19 secs)
+Time.Estimated...: Sun Nov 29 21:58:00 2020 (0 secs)
+Guess.Mask.......: ?u?a?a?a?a?a?aP@ssw0rd123! [19]
+Guess.Queue......: 1/1 (100.00%)
+Speed.Dev.#1.....:  9975.1 MH/s (1.86ms)
+Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+Progress.........: 2003651788800/19112389156250 (10.48%)
+Rejected.........: 0/2003651788800 (0.00%)
+Restore.Point....: 8519680/81450625 (10.46%)
+Candidates.#1....: NUE)m%6P@ssw0rd123! -> Kyoqd2kP@ssw0rd123!
+HWMon.Dev.#1.....: Temp: 77c Util: 90% Core:1155MHz Mem:5000MHz Bus:16
+
+Started: Sun Nov 29 21:54:37 2020
+Stopped: Sun Nov 29 21:58:02 2020
+```
+
+**Answer: SecuredP@ssw0rd123!**
