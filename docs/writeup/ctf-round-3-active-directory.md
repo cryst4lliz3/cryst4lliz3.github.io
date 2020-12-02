@@ -28,7 +28,7 @@ While scrolling, I found this line of config included host name, port number and
 
 Question 2 asked for the user network address. To achieve that, I need to connect to the VPN. I ran `sudo openvpn vpn_conect.config`. Once connection initialized, I ran `ifconfig` and look for interface name like **tunXX**. There is the user IP address at the interface. Note that network address is like **10.XXX.XXX.0**. Simply changed it.
 
-**Answer: 10.0.200.0**
+**Answer: 10.0.200.0/24**
 
 ### Q3 - Challenge server network address
 
@@ -50,7 +50,7 @@ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
 
 On interface **tun0**, there are 2 network address, **192.168.9.0** and **192.168.240.0** that have flag **UG**. This flag means that the route is up and point to a gateway. Both address point to **10.0.200.1** which is the gateway. I tested both network address and got the right answer.
 
-**Answer: 192.168.240.0**
+**Answer: 192.168.240.0/24**
 
 ## Challenges - Web Server
 
