@@ -1,4 +1,4 @@
-This is the write-up of [My Web Server: 1](https://medium.com/r/?url=https%3A%2F%2Fwww.vulnhub.com%2Fentry%2Fmy-web-server-1%2C463%2F) by [Akanksha Sachin Verma](https://medium.com/r/?url=https%3A%2F%2Fwww.vulnhub.com%2Fauthor%2Fakanksha-sachin-verma%2C672%2F) from [Vulnhub](https://medium.com/r/?url=https%3A%2F%2Fwww.vulnhub.com%2F).
+This is the write-up of [My Web Server: 1](https://www.vulnhub.com/entry/my-web-server-1,463/) by [Akanksha Sachin Verma](https://twitter.com/@akankshavermasv) from [Vulnhub](https://www.vulnhub.com/).
 
 ## Description
 
