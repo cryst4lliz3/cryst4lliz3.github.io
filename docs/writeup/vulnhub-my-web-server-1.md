@@ -1,6 +1,13 @@
 This is the write-up of [My Web Server: 1](https://www.vulnhub.com/entry/my-web-server-1,463/) by [Akanksha Sachin Verma](https://twitter.com/@akankshavermasv) from [Vulnhub](https://www.vulnhub.com/).
 
-## Description
+## About
+
+Name: [My Web Server: 1](https://www.vulnhub.com/entry/my-web-server-1,463/)  
+Date release: 13 Apr 2020  
+Author: [Akanksha Sachin Verma](https://twitter.com/@akankshavermasv)  
+Series: [My Web Server](https://www.vulnhub.com/series/my-web-server,299/)
+
+Description: 
 
 ```
 "Welcome to "My Web Server"
